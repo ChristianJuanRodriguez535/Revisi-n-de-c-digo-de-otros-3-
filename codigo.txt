@@ -1,0 +1,123 @@
+
+filtro.html
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="filtro.css">
+  <title>Filtros en JS</title>
+</head>
+
+<body>
+
+
+  <h1>Lista de productos </h1>
+  <div>
+    <input class="input" type="text" placeholder="Seleccioná un color o tipo">
+    <button>Filtrar</button>
+    <ul id="lista-de-productos"></ul>
+  </div>
+
+  <script src="filtro.js"></script>
+  
+</body>
+
+</html>
+
+
+
+filtro.js
+
+// Tenemos un li de productos
+
+const productos = [
+  {nombre: "Zapato negro", tipo: "zapato", color: "negro", img: "./taco-negro.jpg"},
+  {nombre: "Zapato azul", tipo: "zapato", color: "azul", img: "./taco-azul.jpg"},
+  {nombre: "Bota negra", tipo: "bota", color: "negro", img: "./bota-negra.jpg"},
+  {nombre: "Bota azul", tipo: "bota", color: "azul", img: "./bota-azul.jpg"},
+  {nombre: "Zapato rojo", tipo: "zapato", color: "rojo", img: "./zapato-rojo.jpg"}
+]
+
+//usar ById
+const li = document.getElementById("lista-de-productos")
+const input = document.querySelector('.input');
+const boton = document.querySelector('button');
+
+
+//usamos cont en lugar de var 
+//creamos elemento li en lugar de div para hacer la lista
+
+
+//Mostrar productos en la pagina 
+function productosPantalla (arregloProductos) {
+
+  li.innerHTML = "";
+
+  for (let i = 0; i < productos.length; i++) {
+    
+    const producto = arregloProductos[i];
+
+    //Hacer una elemto li para cada producto
+
+    const item = document.createElement("li");
+    item.classList.add("producto");
+
+       //titulo del producto 
+
+   
+   const titulo = document.createElement("p");
+    titulo.textContent = producto.nombre;
+   
+   
+    //crear imagen del prodcuto 
+
+    const imagen = document.createElement("img");
+    imagen.src = producto.img;
+
+    //Afregar titulo e imagen al elemento 
+    item.appendChild(titulo);
+    item.appendChild(imagen);
+
+    //Agregar producto a la lista
+
+    li.appendChild(item);
+  }
+
+}
+
+
+//Funcion para filtrar los productos 
+
+function filtrarProductos (texto){
+
+   const productosFiltrados = [];
+   const textoMinusculas = texto.toLowerCase(); //para que no haya problea con minusculas 
+
+   for (let i = 0; i < productos.length; i++) {
+    const producto = productos[i];
+  
+  if (producto.tipo.toLowerCase().indexOf(textoMinusculas) !== -1 || producto.color.toLowerCase().indexOf(textoMinusculas) !== -1) {
+      productosFiltrados.push(producto);
+      }
+     }
+
+    return productosFiltrados;
+  }
+  
+
+  // Agregar evento al botón de filtro
+boton.addEventListener("click", () => {
+  const texto = input.value.trim(); //texto del input
+  const productosFiltrados = filtrarProductos(texto); 
+
+  productosPantalla(productosFiltrados); // Mostrar productos filtrados
+});
+
+
+productosPantalla(productos);
+
+
